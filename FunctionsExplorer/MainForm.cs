@@ -46,6 +46,9 @@ namespace FunctionsExplorer
 
             var openButton = actions.Controls["Open"];
             openButton.Click += (sender, args) => { if (OpenCurrent != null) OpenCurrent.Invoke(sender, args); };
+
+            parametersView.ParameterUpDownsChanged +=
+                downs => { if (ParameterUpDownsChanged != null) ParameterUpDownsChanged.Invoke(downs); };
         }
 
         private void BuildLayout()
@@ -102,19 +105,7 @@ namespace FunctionsExplorer
             functionView.Draw(model.CurrentFunction);
             parametersView.CreateParams(model.CurrentFunction);
 
-            foreach (var upDown in parametersView
-                .Controls
-                .OfType<ModifiedNumericUpDown>())
-            {
-                var index = upDown.CoefficientIndex;
-                upDown.ValueChanged +=
-                    value =>
-                    {
-                        model.CurrentFunction.Coefficients[index] = (int)value;
-                        model.CurrentFunction.CalculateResult();
-                        functionView.Draw(model.CurrentFunction);
-                    };
-            }
+
             parametersView.DrawFunctionStringRepresentation(model.CurrentFunction);
 
         }

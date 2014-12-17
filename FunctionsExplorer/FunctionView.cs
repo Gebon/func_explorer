@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 using FunctionsExplorer.Functions;
@@ -31,7 +25,14 @@ namespace FunctionsExplorer
 
         public void Draw(BaseFunction func)
         {
-            chart.ChartAreas.Clear();
+            try
+            {
+                chart.ChartAreas.Clear();
+            }
+            catch (NullReferenceException)
+            {
+                chart = new Chart();
+            }
             chart.Series.Clear();
 
             chart.ChartAreas.Add("Default");
@@ -54,11 +55,6 @@ namespace FunctionsExplorer
             chart.ChartAreas[0].AxisY.IsStartedFromZero = true;
             chart.ChartAreas[0].AxisY.MajorGrid.Enabled = false;
             chart.ChartAreas[0].AxisY.Crossing = 0;
-        }
-
-        public void UpdateView(Model model)
-        {
-
         }
     }
 }

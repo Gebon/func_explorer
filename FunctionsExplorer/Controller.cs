@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Sockets;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using FunctionsExplorer.Functions;
-
-namespace FunctionsExplorer
+﻿namespace FunctionsExplorer
 {
     public class Controller
     {
@@ -40,6 +31,20 @@ namespace FunctionsExplorer
             };
 
             View.SelectedFunctionChanged += name => Model.CurrentFunction = Model.GetFunctionByName(name);
+
+            View.ParameterUpDownsChanged += downs =>
+            {
+                foreach (var upDown in downs)
+                {
+                    var index = upDown.CoefficientIndex;
+                    upDown.ValueChanged +=
+                        value =>
+                        {
+                            Model.CurrentFunction.Coefficients[index] = (int) value;
+                            Model.CurrentFunction.CalculateResult();
+                        };
+                }
+            };
         }
 
 
